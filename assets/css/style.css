@@ -267,6 +267,10 @@ p{ margin:0; }
 }
 .btn svg{ width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; transition:transform .4s var(--ease); }
 .btn:hover svg:not(.ic-discord){ transform:translateX(3px); }
+/* The arrows are line icons, but the Discord mark is a solid shape. Without
+   this it inherits fill:none/stroke and renders as a hollow outline. */
+.btn svg.ic-discord,
+.clink svg.ic-discord{ fill:currentColor; stroke:none; }
 
 .btn--solid{ background:linear-gradient(120deg,var(--p-600),var(--p-500) 55%,var(--p-400)); color:#fff; box-shadow:0 8px 30px -8px rgba(124,58,237,.7); }
 .btn--solid::after{
