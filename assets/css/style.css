@@ -629,6 +629,8 @@ p{ margin:0; }
   transition:transform .9s var(--ease), opacity .5s, filter .6s;
 }
 .card__media video{ position:absolute; inset:0; opacity:0; }
+/* no poster image — the video itself is the thumbnail */
+.card__media--live video{ opacity:1; }
 .card:hover .card__media img{ transform:scale(1.07); filter:brightness(.55) saturate(1.15); }
 .card.is-playing .card__media video{ opacity:1; }
 .card__media::after{

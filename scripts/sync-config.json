@@ -1,0 +1,17 @@
+{
+  "_comment": "Settings for the Discord -> site sync. Only channelId needs filling in.",
+
+  "channelId": "",
+
+  "mode": "link",
+  "downloadMaxMB": 40,
+
+  "maxMessages": 300,
+  "defaultType": "r6",
+
+  "_typeTags": "First match wins, so keep cutscene above r6. A message tagged #cutscene lands in the Cutscenes tab; anything else falls back to defaultType.",
+  "typeTags": {
+    "cutscene": ["cutscene", "cutscenes", "cinematic", "cinematics", "trailer", "scene", "intro"],
+    "r6": ["r6", "anim", "anims", "animation", "animations", "combat", "movement", "emote", "emotes", "weapon", "weapons"]
+  }
+}

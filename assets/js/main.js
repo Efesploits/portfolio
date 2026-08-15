@@ -430,8 +430,35 @@ function rotator() {
 
 /* ══════════════ 11. WORK GRID ══════════════ */
 
-let ACTIVE = [];      // items currently in the open tab (for lightbox nav)
+let ITEMS = [];       // everything on show — manual entries + whatever synced from Discord
 let CURRENT_TAB = 'r6';
+
+/* Clips posted in #past-works are synced into assets/data/work.json by a
+   GitHub Action. Manual entries in data.js that actually have a src stay
+   pinned at the front; the placeholder slots drop away once real clips land. */
+async function loadSyncedWork() {
+  try {
+    const ctl = AbortController ? new AbortController() : null;
+    const t = ctl && setTimeout(() => ctl.abort(), 4000);
+    const res = await fetch('assets/data/work.json?t=' + Date.now(), {
+      cache: 'no-store',
+      signal: ctl ? ctl.signal : undefined
+    });
+    if (t) clearTimeout(t);
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data.items) ? data.items : [];
+  } catch {
+    return [];   // offline, file://, or not synced yet — fall back to data.js
+  }
+}
+
+async function buildItems() {
+  const synced = await loadSyncedWork();
+  if (!synced.length) { ITEMS = WORK.slice(); return; }
+  const curated = WORK.filter(w => (w.src || '').trim());
+  ITEMS = [...curated, ...synced];
+}
 
 function cardHTML(item, i) {
   const res = resolveSource(item.src);
@@ -446,16 +473,22 @@ function cardHTML(item, i) {
   const fallback = res.thumb && res.thumb.includes('maxresdefault')
     ? ` onerror="this.onerror=null;this.src='${res.thumb.replace('maxresdefault', 'hqdefault')}'"` : '';
 
+  // With no poster image, the video doubles as the thumbnail: the #t=0.1
+  // fragment makes the browser seek to the first real frame and paint it.
+  const isFile  = res.kind === 'video';
+  const asThumb = isFile && !poster;
+
   const media = poster
     ? `<img src="${poster}" alt="${item.title}" loading="lazy" decoding="async"${fallback}>`
     : `<div class="card__ph"><span>${res.kind === 'empty' ? 'Video slot' : 'Preview'}</span></div>`;
 
-  const hoverVid = res.kind === 'video'
-    ? `<video src="${res.file}" muted loop playsinline preload="none"></video>` : '';
+  const hoverVid = isFile
+    ? `<video src="${res.file}${asThumb ? '#t=0.1' : ''}" muted loop playsinline preload="${asThumb ? 'metadata' : 'none'}"></video>`
+    : '';
 
   return `<article class="card" data-idx="${i}" data-tags="${(item.tags || []).join('|')}" data-delay="${(i % 3) * 90}" data-cursor="play">
     <span class="card__line"></span>
-    <div class="card__media">
+    <div class="card__media${asThumb ? ' card__media--live' : ''}">
       ${media}${hoverVid}
       <div class="card__badges">${badges}</div>
       ${item.duration ? `<span class="card__dur">${item.duration}</span>` : ''}
@@ -474,7 +507,7 @@ function cardHTML(item, i) {
 
 function renderWork() {
   ['r6', 'cutscene'].forEach(type => {
-    const items = WORK.filter(w => w.type === type);
+    const items = ITEMS.filter(w => w.type === type);
     const grid = $('#grid-' + type);
     grid.innerHTML = items.length
       ? items.map(cardHTML).join('')
@@ -500,6 +533,30 @@ function renderWork() {
       card.classList.remove('is-playing');
       v.pause(); v.currentTime = 0;
     });
+
+    // Synced clips carry no duration — read it off the file once it loads.
+    grid.addEventListener('loadedmetadata', e => {
+      const v = e.target;
+      if (v.tagName !== 'VIDEO' || !isFinite(v.duration)) return;
+      const media = v.closest('.card__media');
+      if (!media || $('.card__dur', media)) return;
+      const s = Math.round(v.duration);
+      const tag = document.createElement('span');
+      tag.className = 'card__dur';
+      tag.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+      media.appendChild(tag);
+    }, true);
+
+    // Discord attachment links are signed and expire. If one dies before the
+    // next sync, drop the video and let the placeholder show instead of a
+    // broken black box.
+    grid.addEventListener('error', e => {
+      const v = e.target;
+      if (v.tagName !== 'VIDEO') return;
+      const media = v.closest('.card__media');
+      if (media) media.classList.remove('card__media--live');
+      v.remove();
+    }, true);
   });
 
   buildFilters('r6');
@@ -507,7 +564,7 @@ function renderWork() {
 }
 
 function buildFilters(type) {
-  const tags = [...new Set(WORK.filter(w => w.type === type).flatMap(w => w.tags || []))];
+  const tags = [...new Set(ITEMS.filter(w => w.type === type).flatMap(w => w.tags || []))];
   $('#filters').innerHTML = tags.length
     ? `<button class="filter is-on" data-tag="*">All</button>` +
       tags.map(t => `<button class="filter" data-tag="${t}">${t}</button>`).join('')
@@ -568,7 +625,7 @@ const lb = $('#lightbox');
 let lbIndex = 0, lbList = [];
 
 function openLightbox(type, idx) {
-  lbList = WORK.filter(w => w.type === type);
+  lbList = ITEMS.filter(w => w.type === type);
   lbIndex = idx;
   paintLightbox();
   lb.classList.add('is-open');
@@ -679,8 +736,9 @@ function parallax() {
 
 /* ══════════════ INIT ══════════════ */
 
-function init() {
+async function init() {
   renderStatic();
+  await buildItems();
   renderWork();
 
   $$('[data-split]').forEach(splitChars);

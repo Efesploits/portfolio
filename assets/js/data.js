@@ -14,9 +14,8 @@ const SITE = {
   role: "Roblox Animator",
 
   /* ── DISCORD ──────────────────────────────────────────────────
-     Paste your invite here, e.g. "https://discord.gg/xxxxxxx"
-     Leave "" and every Discord button politely says "coming soon". */
-  discord: "",
+     Fills every Discord button on the page. */
+  discord: "https://discord.gg/VSzWJwdQX",
 
   /* Optional hero background video (muted loop behind the title).
      e.g. "media/hero-loop.mp4" — leave "" for the animated canvas only. */
