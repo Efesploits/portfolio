@@ -1,8 +1,8 @@
 {
-  "syncedAt": "2026-08-15T12:54:29.908Z",
+  "syncedAt": "2026-08-15T12:56:46.376Z",
   "channel": "1503846603969138688",
   "mode": "link",
-  "count": 12,
+  "count": 11,
   "items": [
     {
       "id": "1531453274165612634-0",
@@ -111,7 +111,7 @@
     {
       "id": "1506026404956078201-0",
       "type": "r6",
-      "title": "R6 Animation — 18 May 2026",
+      "title": "R6 Animation — 18 May 2026 (2)",
       "desc": "",
       "tags": [],
       "duration": "",
@@ -122,22 +122,9 @@
       "source": "discord"
     },
     {
-      "id": "1505990525063266515-0",
-      "type": "r6",
-      "title": "R6 Animation — 18 May 2026",
-      "desc": "",
-      "tags": [],
-      "duration": "",
-      "featured": false,
-      "poster": "",
-      "src": "https://cdn.discordapp.com/attachments/1501864346438078585/1501864570623623298/copy_15C85844-37F7-4E56-BC61-0357F9844C19.mov?ex=6a8175e0&is=6a802460&hm=3123a93d76529a80fd2f0c4741a7e202463a49f284092607a90965b5a326273b&",
-      "postedAt": "2026-05-18T17:48:41.126000+00:00",
-      "source": "discord"
-    },
-    {
       "id": "1505990427596296433-0",
       "type": "r6",
-      "title": "R6 Animation — 18 May 2026",
+      "title": "R6 Animation — 18 May 2026 (3)",
       "desc": "",
       "tags": [],
       "duration": "",
@@ -150,7 +137,7 @@
     {
       "id": "1505990292422004777-0",
       "type": "r6",
-      "title": "R6 Animation — 18 May 2026",
+      "title": "R6 Animation — 18 May 2026 (4)",
       "desc": "",
       "tags": [],
       "duration": "",
