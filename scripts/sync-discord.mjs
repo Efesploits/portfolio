@@ -116,6 +116,17 @@ async function fetchMessages(channelId, max) {
 
 const DISCORD_CDN = /^https?:\/\/(cdn\.discordapp\.com|media\.discordapp\.net)\//i;
 
+/* refresh-urls happily re-signs a URL whose file no longer exists, so a fresh
+   signature is not proof of anything. Ask the CDN for one byte instead. */
+async function isReachable(url) {
+  try {
+    const res = await fetch(url, { method: 'GET', headers: { Range: 'bytes=0-0' } });
+    return res.ok || res.status === 206;
+  } catch {
+    return false;
+  }
+}
+
 async function refreshCdnLinks(urls) {
   const map = new Map();
   for (let i = 0; i < urls.length; i += 50) {          // endpoint takes 50 at a time
@@ -201,10 +212,12 @@ function buildEntry(msg, src, fallbackTitle, idx) {
   const type  = detectType(tags, content);
 
   let title = (lines[0] || fallbackTitle || '').slice(0, 80);
-  if (looksJunk(title)) title = cleanFallback(type, msg.timestamp);
+  const auto = looksJunk(title);
+  if (auto) title = cleanFallback(type, msg.timestamp);
 
   return {
     id:       `${msg.id}-${idx}`,
+    _auto:    auto,
     type,
     title,
     desc:     lines.slice(1).join(' ').slice(0, 180),
@@ -311,9 +324,31 @@ async function main() {
     }
   }
 
+  /* Now confirm the files are actually still there. */
+  const cdnItems = items.filter(i => !i._stale && DISCORD_CDN.test(i.src));
+  if (cdnItems.length) {
+    const alive = await Promise.all(cdnItems.map(i => isReachable(i.src)));
+    let gone = 0;
+    cdnItems.forEach((item, n) => {
+      if (!alive[n]) { item._stale = true; gone++; }
+    });
+    if (gone) log(`  ${gone} clip(s) no longer exist on Discord's CDN - dropped.`);
+  }
+
   // a permanently dead link renders as a broken card, so drop it instead
   const kept = items.filter(i => !i._stale);
   for (const i of kept) delete i._stale;
+
+  /* Auto-generated titles can collide when several clips share a date.
+     User-written titles are left exactly as typed. */
+  const seenTitle = new Map();
+  for (const item of kept) {
+    if (!item._auto) continue;
+    const n = (seenTitle.get(item.title) || 0) + 1;
+    seenTitle.set(item.title, n);
+    if (n > 1) item.title = `${item.title} (${n})`;
+  }
+  for (const i of kept) delete i._auto;
 
   const byType = kept.reduce((a, i) => (a[i.type] = (a[i.type] || 0) + 1, a), {});
   log(`Found ${kept.length} clip(s): ${JSON.stringify(byType)}`);
