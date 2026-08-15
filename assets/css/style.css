@@ -87,6 +87,37 @@ p{ margin:0; }
 ::-webkit-scrollbar-thumb:hover{ background:var(--p-400); }
 
 
+/* ══════════════ BACKGROUND MARK ══════════════
+   A giant M sitting behind everything, tumbling as the page scrolls.
+   Built from stacked copies offset along Z so it reads as a solid, extruded
+   object when it turns — a single flat glyph just looks like skewed text.
+   Layer colours are opaque; the whole thing is dimmed with one opacity on the
+   container, otherwise 16 translucent copies would pile up unpredictably. */
+.megam{
+  position:fixed; inset:0; z-index:0;
+  display:grid; place-items:center;
+  pointer-events:none; overflow:hidden;
+  /* far enough back that the landed, head-on M reads as a clean letter rather
+     than a starburst of splayed extrusion, but still clearly solid mid-tumble */
+  perspective:1900px;
+  opacity:0;                       /* JS fades it in past the hero */
+  contain:strict;
+}
+.megam__spin{
+  position:relative;
+  width:1em; height:1em;
+  font-family:var(--display); font-weight:800;
+  font-size:clamp(16rem,46vw,44rem); line-height:1;
+  transform-style:preserve-3d;
+  will-change:transform;
+}
+.megam__layer{
+  position:absolute; inset:0;
+  display:grid; place-items:center;
+  user-select:none;
+}
+
+
 /* ══════════════ OVERLAYS ══════════════ */
 .grain{
   position:fixed; inset:-50%;

@@ -722,7 +722,96 @@ function fitWordmark() {
 }
 
 
-/* ══════════════ 15. HERO PARALLAX ══════════════ */
+/* ══════════════ 15. BACKGROUND MARK ══════════════
+   A giant M behind the page that tumbles as you scroll, like something falling
+   end over end. Depth comes from stacked copies offset along Z — the back ones
+   nearly black, the front one purple — so turning it reveals a solid edge
+   instead of flat text on its side. */
+
+// Each layer is a full-size glyph re-composited every frame, so phones get a
+// thinner stack — the extrusion is scaled to match and the look is unchanged.
+const MEGA_LAYERS = innerWidth < 700 ? 9 : 16;
+const MEGA_BACK   = [26, 10, 48];    // deep plum, the far side
+const MEGA_FRONT  = [150, 116, 240]; // lit purple, the face
+
+function buildMegaM() {
+  const spin = $('.megam__spin');
+  if (!spin) return null;
+
+  const depth = 80 / MEGA_LAYERS;   // px between layers, for ~80px of extrusion
+  for (let i = 0; i < MEGA_LAYERS; i++) {
+    const t = i / (MEGA_LAYERS - 1);              // 0 = back, 1 = front face
+    const eased = t * t;                          // keep the lit face thin
+    const rgb = MEGA_BACK.map((c, n) => Math.round(c + (MEGA_FRONT[n] - c) * eased));
+
+    const layer = document.createElement('span');
+    layer.className = 'megam__layer';
+    layer.textContent = 'M';
+    layer.style.color = `rgb(${rgb.join(',')})`;
+    layer.style.transform = `translateZ(${(i - (MEGA_LAYERS - 1) / 2) * depth}px)`;
+    spin.appendChild(layer);
+  }
+  return spin;
+}
+
+function megaM() {
+  const spin = buildMegaM();
+  const host = $('.megam');
+  if (!spin || !host) return;
+
+  // Static, softly tilted, no rAF at all when motion isn't wanted.
+  if (REDUCED) {
+    spin.style.transform = 'rotateX(-12deg) rotateY(-16deg)';
+    host.style.opacity = '.1';
+    return;
+  }
+
+  let cur = 0, raf = null;
+
+  const progress = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    return max > 0 ? clamp(scrollY / max, 0, 1) : 0;
+  };
+
+  function frame(now) {
+    // ease toward the scroll position so flicks glide instead of snapping
+    const target = progress();
+    cur += (target - cur) * 0.075;
+    if (Math.abs(target - cur) < 0.0004) cur = target;   // let it settle exactly
+    const p = cur;
+
+    /* Everything is expressed in terms of `fall` — how much of the drop is
+       left — so every term reaches exactly zero at the bottom of the page.
+       That's what makes it land dead centre and perfectly square, instead of
+       stopping at whatever angle it happened to be mid-tumble. */
+    const fall  = 1 - p;
+    const drift = Math.sin(now / 3200) * fall;   // idle sway, gone once it lands
+
+    const rx = fall * 500 + drift * 4;           // end over end
+    const ry = fall * 220 + drift * 3;           // slow turn
+    const rz = Math.sin(p * Math.PI) * 15;       // leans out and back, 0 at both ends
+    const ty = -fall * 20;                       // drops in from above, vh
+    const sc = 1 - fall * 0.16;                  // settles to full size
+
+    spin.style.transform =
+      `translateY(${ty}vh) rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${sc})`;
+
+    // hidden over the hero (which has its own wordmark), and strongest once landed
+    const shown = clamp((scrollY - innerHeight * 0.3) / (innerHeight * 0.55), 0, 1);
+    host.style.opacity = String(shown * (0.11 + p * 0.07));
+
+    raf = requestAnimationFrame(frame);
+  }
+
+  const start = () => { if (!raf) raf = requestAnimationFrame(frame); };
+  const stop  = () => { if (raf) { cancelAnimationFrame(raf); raf = null; } };
+
+  start();
+  document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
+}
+
+
+/* ══════════════ 16. HERO PARALLAX ══════════════ */
 
 function parallax() {
   if (REDUCED) return;
@@ -756,6 +845,7 @@ async function init() {
   cursor();
   magnetic();
   heroCanvas();
+  megaM();
   parallax();
   runLoader();
 
