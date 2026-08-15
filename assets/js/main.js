@@ -509,9 +509,11 @@ function renderWork() {
   ['r6', 'cutscene'].forEach(type => {
     const items = ITEMS.filter(w => w.type === type);
     const grid = $('#grid-' + type);
+    const label = type === 'cutscene' ? 'cutscenes' : 'R6 animations';
     grid.innerHTML = items.length
       ? items.map(cardHTML).join('')
-      : `<div class="empty">Nothing here yet — add entries to <code>assets/js/data.js</code>.</div>`;
+      : `<div class="empty">No ${label} up yet — post one in <b>#past-works</b>
+           tagged <code>#${type === 'cutscene' ? 'cutscene' : 'r6'}</code> and it lands here automatically.</div>`;
     $(`[data-count-for="${type}"]`).textContent = String(items.length).padStart(2, '0');
 
     grid.addEventListener('click', e => {

@@ -713,8 +713,14 @@ p{ margin:0; }
 .card:hover .card__line{ transform:scaleX(1); }
 
 .empty{
-  grid-column:1/-1; padding:60px 30px; text-align:center;
+  grid-column:1/-1; padding:60px 30px; text-align:center; line-height:1.7;
   border:1px dashed var(--line); border-radius:18px; color:var(--fog-2);
+}
+.empty b{ color:var(--white); font-weight:600; }
+.empty code{
+  font-family:var(--mono); font-size:.78rem; color:var(--p-300);
+  background:rgba(167,139,250,.12); padding:3px 8px; border-radius:6px;
+  border:1px solid var(--line-2);
 }
 
 
