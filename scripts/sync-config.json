@@ -1,7 +1,7 @@
 {
   "_comment": "Settings for the Discord -> site sync. Only channelId needs filling in.",
 
-  "channelId": "",
+  "channelId": "1503846603969138688",
 
   "mode": "link",
   "downloadMaxMB": 40,
