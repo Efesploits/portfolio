@@ -24,8 +24,10 @@ const TOKEN  = process.env.DISCORD_BOT_TOKEN;
 const API    = 'https://discord.com/api/v10';
 const OUT    = path.join(ROOT, 'assets/data/work.json');
 
-const VIDEO_EXT = /\.(mp4|webm|mov|m4v)$/i;
-const LINK_RE   = /https?:\/\/(?:www\.)?(?:youtu\.be|youtube\.com|streamable\.com|medal\.tv)\/\S+/gi;
+const VIDEO_EXT = /\.(mp4|webm|mov|m4v)(?:$|\?)/i;
+// hosted players, plus any bare link that points straight at a video file
+// (someone pasting a cdn.discordapp.com clip from another channel, say)
+const LINK_RE   = /https?:\/\/(?:(?:www\.)?(?:youtu\.be|youtube\.com|streamable\.com|medal\.tv)\/\S+|\S+\.(?:mp4|webm|mov|m4v)(?:\?\S*)?)/gi;
 const TAG_RE    = /#([\p{L}\d_-]{2,24})/gu;
 
 const log = (...a) => console.log(...a);
@@ -180,6 +182,21 @@ async function main() {
   const messages = await fetchMessages(CFG.channelId, CFG.maxMessages || 300);
   log(`Read ${messages.length} message(s) from channel ${CFG.channelId}.`);
 
+  /* What actually came back. If the Message Content Intent is off, Discord
+     blanks content/attachments/embeds, so all three of these read zero even
+     though the messages themselves arrive fine. */
+  const seenAttachments = new Set();
+  const stats = { text: 0, attachments: 0, embeds: 0 };
+  for (const m of messages) {
+    if ((m.content || '').trim()) stats.text++;
+    if ((m.attachments || []).length) stats.attachments++;
+    if ((m.embeds || []).length) stats.embeds++;
+    for (const a of m.attachments || []) {
+      seenAttachments.add(`${a.content_type || 'unknown'} (${a.filename || '?'})`);
+    }
+  }
+  log(`  with text: ${stats.text}   with attachments: ${stats.attachments}   with embeds: ${stats.embeds}`);
+
   const items = [];
 
   for (const msg of messages) {
@@ -204,9 +221,24 @@ async function main() {
   const byType = items.reduce((a, i) => (a[i.type] = (a[i.type] || 0) + 1, a), {});
   log(`Found ${items.length} clip(s): ${JSON.stringify(byType)}`);
 
-  if (!items.length) {
-    log('⚠ No videos found. If the channel definitely has clips, the bot is probably missing the');
-    log('  Message Content Intent — enable it in the Developer Portal under Bot → Privileged Gateway Intents.');
+  if (!items.length && messages.length) {
+    if (!stats.text && !stats.attachments && !stats.embeds) {
+      log('');
+      log('⚠ Every message came back completely blank — no text, no attachments, no embeds.');
+      log('  That is the signature of the Message Content Intent being OFF.');
+      log('  Fix: Developer Portal → your app → Bot → Privileged Gateway Intents →');
+      log('       switch on MESSAGE CONTENT INTENT → Save Changes, then re-run this.');
+    } else {
+      log('');
+      log(`⚠ Messages are readable (${stats.text} with text, ${stats.attachments} with attachments),`);
+      log('  but none of them held a video.');
+      if (seenAttachments.size) {
+        log('  Attachment types actually seen in this channel:');
+        for (const t of [...seenAttachments].slice(0, 15)) log(`    · ${t}`);
+      } else {
+        log('  No attachments at all — are the clips posted in threads, or in a different channel?');
+      }
+    }
   }
 
   mkdirSync(path.dirname(OUT), { recursive: true });

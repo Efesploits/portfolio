@@ -11,6 +11,7 @@ on:
   push:
     paths:
       - 'scripts/sync-config.json'
+      - 'scripts/sync-discord.mjs'
       - '.github/workflows/sync-discord.yml'
 
 concurrency:
@@ -25,12 +26,10 @@ jobs:
     outputs:
       changed: ${{ steps.commit.outputs.changed }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
+      # No setup-node step: the runner already ships a current Node, and pinning
+      # 20 only pulled in a deprecated download plus its warnings.
       - name: Pull clips from Discord
         env:
           DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
@@ -69,7 +68,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           ref: main
       - uses: actions/configure-pages@v5
