@@ -54,10 +54,16 @@ if (!CFG.channelId) {
 
 /* ══════════════ Discord API ══════════════ */
 
-async function api(url) {
+async function api(url, { method = 'GET', body } = {}) {
   for (let attempt = 0; attempt < 5; attempt++) {
     const res = await fetch(url, {
-      headers: { Authorization: `Bot ${TOKEN}`, 'User-Agent': 'm3fxn-portfolio-sync/1.0' }
+      method,
+      headers: {
+        Authorization: `Bot ${TOKEN}`,
+        'User-Agent': 'm3fxn-portfolio-sync/1.0',
+        ...(body ? { 'Content-Type': 'application/json' } : {})
+      },
+      body: body ? JSON.stringify(body) : undefined
     });
 
     if (res.status === 429) {
@@ -101,6 +107,37 @@ async function fetchMessages(channelId, max) {
 }
 
 
+/* ══════════════ Expired CDN links ══════════════
+
+   An attachment's `url` comes back freshly signed on every API call, so those
+   never go stale. A CDN link sitting in a message's *text*, though, keeps the
+   signature it had when it was typed — months-old ones are already dead and
+   the browser just gets a 404. Discord exposes an endpoint to re-sign them. */
+
+const DISCORD_CDN = /^https?:\/\/(cdn\.discordapp\.com|media\.discordapp\.net)\//i;
+
+async function refreshCdnLinks(urls) {
+  const map = new Map();
+  for (let i = 0; i < urls.length; i += 50) {          // endpoint takes 50 at a time
+    const batch = urls.slice(i, i + 50);
+    let out;
+    try {
+      out = await api(`${API}/attachments/refresh-urls`, {
+        method: 'POST',
+        body: { attachment_urls: batch }
+      });
+    } catch (err) {
+      log(`  ↷ could not refresh a batch of ${batch.length} link(s): ${err.message}`);
+      continue;
+    }
+    for (const r of out?.refreshed_urls || []) {
+      if (r?.original && r?.refreshed) map.set(r.original, r.refreshed);
+    }
+  }
+  return map;
+}
+
+
 /* ══════════════ Message → card ══════════════ */
 
 const titleCase   = s => s.replace(/\b\p{L}/gu, c => c.toUpperCase());
@@ -122,6 +159,35 @@ function detectType(tags, content) {
   return CFG.defaultType || 'r6';
 }
 
+/* "Desktop 2026.07.28 - 03.07.49.01" is a recorder's filename, not a title.
+   Anything that looks auto-generated gets a clean label instead — the animator
+   names a clip properly by putting the name on the first line of the message. */
+const JUNK_TITLE = [
+  /^desktop[\s._-]*\d/i,
+  /^screen[\s._-]*recording/i,
+  /^roblox[\s._-]*studio[\s._-]*\d/i,
+  /^(obs|replay|capture|movie|video|clip|untitled|recording|new)[\s._-]*\d*$/i,
+  /^copy[\s._-]*[0-9a-f-]{8,}/i,
+  /^\d{4}[\s._-]\d{1,2}[\s._-]\d{1,2}\b/,     // 2026-07-03 05-21-44
+  /^\d{2,4}[\s._-]*\d*$/,                      // 0629_1
+  /^[0-9a-f-]{12,}$/i                          // bare uuid/hash
+];
+const looksJunk = t => !t || !t.trim() || JUNK_TITLE.some(re => re.test(t.trim()));
+
+const TYPE_LABEL = { r6: 'R6 Animation', cutscene: 'Cutscene' };
+
+function cleanFallback(type, timestamp) {
+  const label = TYPE_LABEL[type] || 'Animation';
+  const d = timestamp ? new Date(timestamp) : null;
+  if (!d || isNaN(d.getTime())) return label;
+  return `${label} — ${d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+}
+
+function nameFromUrl(u) {
+  try { return prettyName(decodeURIComponent(new URL(u).pathname.split('/').pop() || '')); }
+  catch { return ''; }
+}
+
 function buildEntry(msg, src, fallbackTitle, idx) {
   const content = (msg.content || '').trim();
   const tags    = [...content.matchAll(TAG_RE)].map(m => m[1].toLowerCase());
@@ -132,11 +198,15 @@ function buildEntry(msg, src, fallbackTitle, idx) {
     .trim();
 
   const lines = clean.split('\n').map(s => s.trim()).filter(Boolean);
+  const type  = detectType(tags, content);
+
+  let title = (lines[0] || fallbackTitle || '').slice(0, 80);
+  if (looksJunk(title)) title = cleanFallback(type, msg.timestamp);
 
   return {
     id:       `${msg.id}-${idx}`,
-    type:     detectType(tags, content),
-    title:    (lines[0] || fallbackTitle).slice(0, 80),
+    type,
+    title,
     desc:     lines.slice(1).join(' ').slice(0, 180),
     tags:     tags.filter(t => !RESERVED.has(t)).slice(0, 3).map(t => titleCase(t.replace(/[-_]/g, ' '))),
     duration: '',                       // the site reads this off the video itself
@@ -212,16 +282,43 @@ async function main() {
       items.push(buildEntry(msg, src, prettyName(att.filename || 'Clip'), idx++));
     }
 
-    // YouTube / Streamable / Medal links pasted into the channel count too
+    // Links pasted into the channel count too
     for (const link of (msg.content || '').match(LINK_RE) || []) {
-      items.push(buildEntry(msg, link, 'Clip', idx++));
+      const entry = buildEntry(msg, link, nameFromUrl(link), idx++);
+      if (DISCORD_CDN.test(link)) entry._stale = true;   // signature needs re-issuing
+      items.push(entry);
     }
   }
 
-  const byType = items.reduce((a, i) => (a[i.type] = (a[i.type] || 0) + 1, a), {});
-  log(`Found ${items.length} clip(s): ${JSON.stringify(byType)}`);
+  /* Re-sign the CDN links that came out of message text. */
+  const stale = items.filter(i => i._stale);
+  if (stale.length) {
+    log(`Re-signing ${stale.length} expired CDN link(s)...`);
+    const fresh = await refreshCdnLinks([...new Set(stale.map(i => i.src))]);
 
-  if (!items.length && messages.length) {
+    let revived = 0;
+    for (const item of stale) {
+      const url = fresh.get(item.src);
+      if (url) { item.src = url; item._stale = false; revived++; }
+    }
+
+    const dead = stale.length - revived;
+    log(`  ${revived} revived${dead ? `, ${dead} unrecoverable` : ''}.`);
+    if (dead) {
+      log('  Dropping the unrecoverable ones rather than shipping broken cards. That');
+      log('  usually means the original message was deleted, or the bot cannot see the');
+      log('  channel the attachment was originally posted in.');
+    }
+  }
+
+  // a permanently dead link renders as a broken card, so drop it instead
+  const kept = items.filter(i => !i._stale);
+  for (const i of kept) delete i._stale;
+
+  const byType = kept.reduce((a, i) => (a[i.type] = (a[i.type] || 0) + 1, a), {});
+  log(`Found ${kept.length} clip(s): ${JSON.stringify(byType)}`);
+
+  if (!kept.length && messages.length) {
     if (!stats.text && !stats.attachments && !stats.embeds) {
       log('');
       log('⚠ Every message came back completely blank — no text, no attachments, no embeds.');
@@ -246,8 +343,8 @@ async function main() {
     syncedAt: new Date().toISOString(),
     channel:  CFG.channelId,
     mode:     CFG.mode || 'link',
-    count:    items.length,
-    items
+    count:    kept.length,
+    items:    kept
   }, null, 2) + '\n');
 
   log(`✔ Wrote ${path.relative(ROOT, OUT)}`);
