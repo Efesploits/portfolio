@@ -1,0 +1,15 @@
+.DS_Store
+Thumbs.db
+desktop.ini
+node_modules/
+*.log
+.vscode/
+.idea/
+
+# Large source/project files — keep exports in media/, not the raw projects
+*.blend
+*.blend1
+*.rbxl
+*.rbxlx
+*.prproj
+*.aep

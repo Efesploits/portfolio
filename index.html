@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>M3FXN — Roblox Animator</title>
+<meta name="description" content="M3FXN — Roblox animator specialising in R6 combat, movement and cinematic cutscenes. Moon Animator &amp; Blender. Commissions open." />
+<meta name="theme-color" content="#05030B" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="M3FXN — Roblox Animator" />
+<meta property="og:description" content="R6 animation &amp; cinematic cutscenes. Moon Animator, Blender, After Effects." />
+<meta name="twitter:card" content="summary_large_image" />
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%2305030B'/%3E%3Cpath d='M22 74V26h11l17 26 17-26h11v48H67V47L50 72 33 47v27z' fill='%23A78BFA'/%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+<!-- ══ GRAIN + VIGNETTE OVERLAYS ══ -->
+<div class="grain" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+
+<!-- ══ CUSTOM CURSOR ══ -->
+<div class="cursor" aria-hidden="true"><span class="cursor__dot"></span><span class="cursor__ring"></span><span class="cursor__label"></span></div>
+
+<!-- ══ SCROLL PROGRESS ══ -->
+<div class="progress" aria-hidden="true"><span class="progress__bar"></span></div>
+
+<!-- ══ PRELOADER ══ -->
+<div class="loader" id="loader">
+  <div class="loader__inner">
+    <div class="loader__mark" aria-hidden="true">M3FXN</div>
+    <div class="loader__meta">
+      <span class="loader__status">Loading assets</span>
+      <span class="loader__count"><span id="loaderNum">0</span>%</span>
+    </div>
+    <div class="loader__track"><span class="loader__fill" id="loaderFill"></span></div>
+  </div>
+</div>
+
+<!-- ══ NAV ══ -->
+<header class="nav" id="nav">
+  <a href="#top" class="nav__logo" data-cursor="link" aria-label="M3FXN home">
+    <span class="nav__logo-mark">M3</span><span class="nav__logo-rest">FXN</span>
+    <span class="nav__logo-dot"></span>
+  </a>
+
+  <nav class="nav__links" aria-label="Primary">
+    <a href="#work" data-nav-tab="r6"       data-cursor="link"><span>R6 Anims</span></a>
+    <a href="#work" data-nav-tab="cutscene" data-cursor="link"><span>Cutscenes</span></a>
+    <a href="#about"   data-cursor="link"><span>About</span></a>
+    <a href="#process" data-cursor="link"><span>Process</span></a>
+    <a href="#discord" data-cursor="link"><span>Discord</span></a>
+  </nav>
+
+  <div class="nav__right">
+    <a href="#contact" class="btn btn--ghost nav__cta" data-cursor="link">
+      <span>Commissions</span><i class="dot-live" aria-hidden="true"></i>
+    </a>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ══ MOBILE MENU ══ -->
+<div class="mobile" id="mobileMenu" aria-hidden="true">
+  <div class="mobile__inner">
+    <a href="#work"    data-nav-tab="r6"><span class="mobile__idx">01</span>R6 Anims</a>
+    <a href="#work"    data-nav-tab="cutscene"><span class="mobile__idx">02</span>Cutscenes</a>
+    <a href="#about"><span class="mobile__idx">03</span>About</a>
+    <a href="#process"><span class="mobile__idx">04</span>Process</a>
+    <a href="#discord"><span class="mobile__idx">05</span>Discord</a>
+    <a href="#contact"><span class="mobile__idx">06</span>Contact</a>
+  </div>
+  <div class="mobile__foot"><span>M3FXN</span><span id="mobileDiscord">Discord</span></div>
+</div>
+
+<main id="top">
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero" id="hero">
+  <div class="hero__bg" aria-hidden="true">
+    <div class="aurora aurora--1"></div>
+    <div class="aurora aurora--2"></div>
+    <div class="aurora aurora--3"></div>
+    <canvas id="fx"></canvas>
+    <div class="hero__grid"></div>
+    <video class="hero__video" id="heroVideo" muted loop playsinline></video>
+    <div class="hero__scrim"></div>
+  </div>
+
+  <div class="hero__content">
+    <div class="hero__eyebrow reveal" data-reveal>
+      <i class="dot-live"></i>
+      <span>Roblox Animator</span>
+      <span class="sep">/</span>
+      <span class="mono">Moon Animator &middot; Blender</span>
+    </div>
+
+    <h1 class="hero__title">
+      <span class="hero__line" data-split>M3FXN</span>
+    </h1>
+
+    <div class="hero__roles reveal" data-reveal data-delay="120">
+      <span class="hero__roles-static">I animate</span>
+      <span class="hero__roles-rotator" id="rotator" aria-live="polite"><span>R6 combat</span></span>
+    </div>
+
+    <p class="hero__lede reveal" data-reveal data-delay="200">
+      Frame-by-frame <strong>R6 combat, movement and cinematic cutscenes</strong> for Roblox games that
+      need to feel expensive. Weight, impact, follow-through &mdash; every keyframe hand-placed,
+      every camera cut earned. If it looks stiff, it isn't finished.
+    </p>
+
+    <div class="hero__actions reveal" data-reveal data-delay="280">
+      <a href="#work" class="btn btn--solid magnetic" data-cursor="view">
+        <span>View the work</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#discord" class="btn btn--outline magnetic" data-discord-link data-cursor="link">
+        <svg viewBox="0 0 24 24" class="ic-discord" aria-hidden="true"><path d="M19.3 5.3A16 16 0 0 0 15.4 4l-.2.4a12 12 0 0 1 3.4 1.7 11 11 0 0 0-9.3 0A12 12 0 0 1 12.8 4.4L12.6 4a16 16 0 0 0-3.9 1.3C6 9.4 5.3 13.4 5.6 17.4a16 16 0 0 0 4.8 2.4l1-1.6a10 10 0 0 1-1.6-.8l.4-.3a11 11 0 0 0 9.6 0l.4.3a10 10 0 0 1-1.6.8l1 1.6a16 16 0 0 0 4.8-2.4c.4-4.6-.6-8.6-3.1-12.1ZM10.3 15c-.9 0-1.7-.9-1.7-2s.8-2 1.7-2 1.7.9 1.7 2-.8 2-1.7 2Zm5.4 0c-.9 0-1.7-.9-1.7-2s.8-2 1.7-2 1.7.9 1.7 2-.8 2-1.7 2Z" stroke="none" fill="currentColor"/></svg>
+        <span>Join the Discord</span>
+      </a>
+    </div>
+
+    <ul class="hero__stats reveal" data-reveal data-delay="360" id="heroStats"></ul>
+  </div>
+
+  <a href="#about" class="hero__scroll" aria-label="Scroll down" data-cursor="link">
+    <span class="mono">SCROLL</span>
+    <span class="hero__scroll-line"><i></i></span>
+  </a>
+</section>
+
+<!-- ══════════ MARQUEE ══════════ -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track" id="marquee"></div>
+</div>
+
+<!-- ══════════ ABOUT ══════════ -->
+<section class="section about" id="about">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-tag reveal" data-reveal><i></i>01 &mdash; About</span>
+      <h2 class="sec-title" data-split-lines>The animator behind the frames</h2>
+    </div>
+
+    <div class="about__grid">
+      <div class="about__lead">
+        <p class="about__big reveal" data-reveal>
+          I'm <strong>M3FXN</strong> &mdash; a Roblox animator obsessed with the two seconds most people skip.
+          The wind-up before the swing. The hitch in a landing. The half-frame hold that makes a
+          punch <em>land</em>.
+        </p>
+        <p class="about__text reveal" data-reveal data-delay="100">
+          I work primarily in <strong>Moon Animator</strong> for R6 rigs and move into
+          <strong>Blender</strong> when a shot needs real camera work, simulation or lighting.
+          Everything ships game-ready: clean keys, correct rig hierarchy, looping tested in Studio,
+          exported and documented so your scripters never have to guess.
+        </p>
+        <p class="about__text reveal" data-reveal data-delay="160">
+          Combat sets, movement kits, emotes, weapon rigs, trailer cutscenes &mdash; if it moves on a
+          Roblox character, I've probably animated it. I take a small number of commissions at a time
+          so nothing leaves half-polished.
+        </p>
+
+        <div class="about__quote reveal" data-reveal data-delay="220">
+          <span class="about__quote-mark" aria-hidden="true">&ldquo;</span>
+          <p>Stiff animation is just missing spacing. Everything else is patience.</p>
+        </div>
+      </div>
+
+      <aside class="about__side">
+        <div class="panel reveal" data-reveal data-delay="120">
+          <h3 class="panel__title mono">Specialities</h3>
+          <ul class="skills" id="skillsList"></ul>
+        </div>
+
+        <div class="panel reveal" data-reveal data-delay="200">
+          <h3 class="panel__title mono">Toolkit</h3>
+          <div class="chips" id="toolsList"></div>
+        </div>
+
+        <div class="panel panel--status reveal" data-reveal data-delay="260">
+          <div class="status">
+            <i class="dot-live"></i>
+            <div>
+              <strong id="availTitle">Commissions open</strong>
+              <span id="availSub">Currently taking new projects</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="counters" id="counters"></div>
+  </div>
+</section>
+
+<!-- ══════════ WORK ══════════ -->
+<section class="section work" id="work">
+  <div class="wrap">
+    <div class="sec-head sec-head--row">
+      <div>
+        <span class="sec-tag reveal" data-reveal><i></i>02 &mdash; Selected work</span>
+        <h2 class="sec-title" data-split-lines>Reel &amp; released shots</h2>
+      </div>
+      <p class="sec-note reveal" data-reveal data-delay="120">
+        Hover a card to preview. Click for the full-size player.
+      </p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs reveal" data-reveal data-delay="80">
+      <div class="tabs__list" role="tablist" aria-label="Work categories">
+        <button class="tab is-active" role="tab" aria-selected="true"  data-tab="r6"       id="tab-r6"       aria-controls="panel-r6"       data-cursor="link">
+          <span class="tab__label">R6 Anims</span><span class="tab__count mono" data-count-for="r6">0</span>
+        </button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="cutscene" id="tab-cutscene" aria-controls="panel-cutscene" data-cursor="link">
+          <span class="tab__label">Cutscenes</span><span class="tab__count mono" data-count-for="cutscene">0</span>
+        </button>
+        <span class="tabs__ink" id="tabsInk" aria-hidden="true"></span>
+      </div>
+      <div class="tabs__filters" id="filters"></div>
+    </div>
+
+    <!-- Panels -->
+    <div class="work__panel" role="tabpanel" id="panel-r6" aria-labelledby="tab-r6">
+      <p class="work__blurb">Combat sets, movement kits, emotes and weapon work built on the R6 rig in Moon Animator.</p>
+      <div class="grid" id="grid-r6"></div>
+    </div>
+
+    <div class="work__panel is-hidden" role="tabpanel" id="panel-cutscene" aria-labelledby="tab-cutscene" hidden>
+      <p class="work__blurb">Directed sequences &mdash; camera language, staging, lighting and edit. Trailer and story work.</p>
+      <div class="grid grid--wide" id="grid-cutscene"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PROCESS ══════════ -->
+<section class="section process" id="process">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-tag reveal" data-reveal><i></i>03 &mdash; Process</span>
+      <h2 class="sec-title" data-split-lines>How a commission runs</h2>
+    </div>
+    <div class="steps" id="steps"></div>
+  </div>
+</section>
+
+<!-- ══════════ DISCORD ══════════ -->
+<section class="section discord" id="discord">
+  <div class="wrap">
+    <div class="dcard reveal" data-reveal>
+      <div class="dcard__glow" aria-hidden="true"></div>
+      <div class="dcard__body">
+        <div class="dcard__left">
+          <span class="sec-tag"><i></i>04 &mdash; Community</span>
+          <h2 class="dcard__title">Join the <span class="grad">M3FXN</span> server</h2>
+          <p class="dcard__text">
+            Work-in-progress clips, commission slots announced first, animation breakdowns and
+            free rigs. It's where every project starts &mdash; drop a brief and we talk it through.
+          </p>
+          <ul class="dcard__perks" id="perks"></ul>
+          <a class="btn btn--discord magnetic" data-discord-link href="#" target="_blank" rel="noopener" data-cursor="join">
+            <svg viewBox="0 0 24 24" class="ic-discord" aria-hidden="true"><path d="M19.3 5.3A16 16 0 0 0 15.4 4l-.2.4a12 12 0 0 1 3.4 1.7 11 11 0 0 0-9.3 0A12 12 0 0 1 12.8 4.4L12.6 4a16 16 0 0 0-3.9 1.3C6 9.4 5.3 13.4 5.6 17.4a16 16 0 0 0 4.8 2.4l1-1.6a10 10 0 0 1-1.6-.8l.4-.3a11 11 0 0 0 9.6 0l.4.3a10 10 0 0 1-1.6.8l1 1.6a16 16 0 0 0 4.8-2.4c.4-4.6-.6-8.6-3.1-12.1ZM10.3 15c-.9 0-1.7-.9-1.7-2s.8-2 1.7-2 1.7.9 1.7 2-.8 2-1.7 2Zm5.4 0c-.9 0-1.7-.9-1.7-2s.8-2 1.7-2 1.7.9 1.7 2-.8 2-1.7 2Z" stroke="none" fill="currentColor"/></svg>
+            <span id="discordBtnLabel">Open invite</span>
+            <svg viewBox="0 0 24 24" class="ic-arrow" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+          </a>
+          <span class="dcard__hint mono" id="discordHint">Invite link coming soon</span>
+        </div>
+
+        <div class="dcard__right" aria-hidden="true">
+          <div class="dorb">
+            <div class="dorb__ring dorb__ring--1"></div>
+            <div class="dorb__ring dorb__ring--2"></div>
+            <div class="dorb__ring dorb__ring--3"></div>
+            <svg viewBox="0 0 24 24" class="dorb__icon"><path d="M19.3 5.3A16 16 0 0 0 15.4 4l-.2.4a12 12 0 0 1 3.4 1.7 11 11 0 0 0-9.3 0A12 12 0 0 1 12.8 4.4L12.6 4a16 16 0 0 0-3.9 1.3C6 9.4 5.3 13.4 5.6 17.4a16 16 0 0 0 4.8 2.4l1-1.6a10 10 0 0 1-1.6-.8l.4-.3a11 11 0 0 0 9.6 0l.4.3a10 10 0 0 1-1.6.8l1 1.6a16 16 0 0 0 4.8-2.4c.4-4.6-.6-8.6-3.1-12.1ZM10.3 15c-.9 0-1.7-.9-1.7-2s.8-2 1.7-2 1.7.9 1.7 2-.8 2-1.7 2Zm5.4 0c-.9 0-1.7-.9-1.7-2s.8-2 1.7-2 1.7.9 1.7 2-.8 2-1.7 2Z" fill="currentColor" stroke="none"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CONTACT ══════════ -->
+<section class="section contact" id="contact">
+  <div class="wrap">
+    <span class="sec-tag reveal" data-reveal><i></i>05 &mdash; Contact</span>
+    <h2 class="contact__title" data-split-lines>Got a project?</h2>
+    <p class="contact__sub reveal" data-reveal data-delay="120">
+      Send a brief &mdash; rig type, shot count, reference, deadline. You'll get a quote and a slot.
+    </p>
+    <div class="contact__links" id="contactLinks"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer class="footer">
+  <div class="wrap footer__in">
+    <div class="footer__brand">
+      <span class="footer__logo">M3FXN</span>
+      <span class="footer__tag mono">Roblox animation &mdash; R6 &amp; cinematics</span>
+    </div>
+    <div class="footer__meta mono">
+      <span id="year"></span>
+      <span class="sep">/</span>
+      <span>All animations &copy; M3FXN</span>
+    </div>
+    <a href="#top" class="footer__top" data-cursor="link">
+      <span>Back to top</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+    </a>
+  </div>
+  <div class="footer__wordmark" aria-hidden="true"><span>M3FXN</span></div>
+</footer>
+
+<!-- ══════════ LIGHTBOX ══════════ -->
+<div class="lb" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Video player">
+  <div class="lb__backdrop" data-lb-close></div>
+  <div class="lb__shell">
+    <button class="lb__close" data-lb-close aria-label="Close player" data-cursor="close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button>
+    <button class="lb__nav lb__nav--prev" id="lbPrev" aria-label="Previous"><svg viewBox="0 0 24 24"><path d="M15 5 8 12l7 7"/></svg></button>
+    <button class="lb__nav lb__nav--next" id="lbNext" aria-label="Next"><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg></button>
+    <div class="lb__stage" id="lbStage"></div>
+    <div class="lb__info">
+      <div>
+        <h3 id="lbTitle">—</h3>
+        <p id="lbDesc">—</p>
+      </div>
+      <div class="lb__tags mono" id="lbTags"></div>
+    </div>
+  </div>
+</div>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
