@@ -1,9 +1,22 @@
 {
-  "syncedAt": "2026-10-27T15:20:39.482Z",
+  "syncedAt": "2026-10-27T22:12:55.634Z",
   "channel": "1503846603969138688",
   "mode": "link",
-  "count": 13,
+  "count": 14,
   "items": [
+    {
+      "id": "1564740791480619149-0",
+      "type": "r6",
+      "title": "R6 Animation — 27 Oct 2026",
+      "desc": "",
+      "tags": [],
+      "duration": "",
+      "featured": false,
+      "poster": "",
+      "src": "https://cdn.discordapp.com/attachments/1503846603969138688/1564740790360481803/1027.mp4?ex=6ae25deb&is=6ae10c6b&hm=f85d30158b32d8326abb04aaa3939b815312d3055d9446ceda26a678f94fef54&",
+      "postedAt": "2026-10-27T20:41:16.167000+00:00",
+      "source": "discord"
+    },
     {
       "id": "1560798077940666378-0",
       "type": "r6",
@@ -91,7 +104,7 @@
       "duration": "",
       "featured": false,
       "poster": "",
-      "src": "https://cdn.discordapp.com/attachments/1190354245103407185/1522322409578037489/2026-07-02_21-15-06.mp4?ex=6ae1a379&is=6ae051f9&hm=0068779a1224cb34bca31f3955980bcc934283164561d6653fe7b630d2b78d88&",
+      "src": "https://cdn.discordapp.com/attachments/1190354245103407185/1522322409578037489/2026-07-02_21-15-06.mp4?ex=6ae24c39&is=6ae0fab9&hm=7359aa2b0a4698266d8c4d10b73a99c7e36175f87db348460e8564d0501a4427&",
       "postedAt": "2026-07-02T19:59:37.090000+00:00",
       "source": "discord"
     },
@@ -104,7 +117,7 @@
       "duration": "",
       "featured": false,
       "poster": "",
-      "src": "https://cdn.discordapp.com/attachments/1518835831735976029/1521201336467591329/0629_1.mp4?ex=6ae183e5&is=6ae03265&hm=8a895ecbe67b750766b475173bc4c981b5332424dba47f8de8251c4bfd6a7eb7&",
+      "src": "https://cdn.discordapp.com/attachments/1518835831735976029/1521201336467591329/0629_1.mp4?ex=6ae22ca5&is=6ae0db25&hm=5c15132a6a0809f885183274c74ba3e29c60904ea1b0554f5c26f38e7ef874c2&",
       "postedAt": "2026-06-30T19:58:19.427000+00:00",
       "source": "discord"
     },
@@ -117,7 +130,7 @@
       "duration": "",
       "featured": false,
       "poster": "",
-      "src": "https://media.discordapp.net/attachments/1190354245103407185/1507846263956308008/Roblox_Studio_2026.05.23_-_23.41.16.05.mp4?ex=6ae1b583&is=6ae06403&hm=15ad715546aa3efde5c9052cefa332c9389c652891d74806b85c26bacf79e745&",
+      "src": "https://media.discordapp.net/attachments/1190354245103407185/1507846263956308008/Roblox_Studio_2026.05.23_-_23.41.16.05.mp4?ex=6ae25e43&is=6ae10cc3&hm=14acd6fae5e0937c52a273dc762ed060c68552f16891852af8bf9264d9814d25&",
       "postedAt": "2026-05-24T10:30:59.224000+00:00",
       "source": "discord"
     },
@@ -130,7 +143,7 @@
       "duration": "",
       "featured": false,
       "poster": "",
-      "src": "https://cdn.discordapp.com/attachments/1190354245103407185/1505988316305293454/2026-05-18_20-38-46.mp4?ex=6ae18aaa&is=6ae0392a&hm=25f198480fa1987f685e7b7af09f954b5a6aa69c3748d24afcd69e7a5cd3c9d0&",
+      "src": "https://cdn.discordapp.com/attachments/1190354245103407185/1505988316305293454/2026-05-18_20-38-46.mp4?ex=6ae2336a&is=6ae0e1ea&hm=cb242e9a2d1323f2881c6a12eff4e4e7096b7878623c7fd673bb80355f5638a1&",
       "postedAt": "2026-05-18T20:11:25.648000+00:00",
       "source": "discord"
     },
@@ -143,7 +156,7 @@
       "duration": "",
       "featured": false,
       "poster": "",
-      "src": "https://cdn.discordapp.com/attachments/1190354245103407185/1503879391506075678/Roblox_Studio_2026.05.13_-_00.59.04.01.mp4?ex=6ae1c793&is=6ae07613&hm=ed04526bb3b9d31b4c0da27a01d56aaba9dec3f981bce688484d698e2c4caccb&",
+      "src": "https://cdn.discordapp.com/attachments/1190354245103407185/1503879391506075678/Roblox_Studio_2026.05.13_-_00.59.04.01.mp4?ex=6ae27053&is=6ae11ed3&hm=7e643142012d96e2b82b83ab026980d73e8fd35f239b4187c4fac01f7d5504eb&",
       "postedAt": "2026-05-18T20:11:15.559000+00:00",
       "source": "discord"
     },
@@ -156,7 +169,7 @@
       "duration": "",
       "featured": false,
       "poster": "",
-      "src": "https://cdn.discordapp.com/attachments/1189220920569634888/1500017173165379584/Roblox_Studio_2026.05.02_-_09.02.24.02.mp4?ex=6ae1925b&is=6ae040db&hm=b5d6ebcfb4b98f4b65cfc70f3a1a7de1139646d4dedfc704ea7a9ca8f170d3fe&",
+      "src": "https://cdn.discordapp.com/attachments/1189220920569634888/1500017173165379584/Roblox_Studio_2026.05.02_-_09.02.24.02.mp4?ex=6ae23b1b&is=6ae0e99b&hm=a61b2b61a63d87f950217409ba0cd9b91d5a3b0107ea072fa367a79ce58e8394&",
       "postedAt": "2026-05-18T17:48:17.888000+00:00",
       "source": "discord"
     },
