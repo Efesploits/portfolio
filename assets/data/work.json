@@ -1,9 +1,22 @@
 {
-  "syncedAt": "2026-10-30T22:18:14.477Z",
+  "syncedAt": "2026-10-31T05:38:41.906Z",
   "channel": "1503846603969138688",
   "mode": "link",
-  "count": 15,
+  "count": 16,
   "items": [
+    {
+      "id": "1565900138558263460-0",
+      "type": "r6",
+      "title": "Comp 1 1",
+      "desc": "",
+      "tags": [],
+      "duration": "",
+      "featured": false,
+      "poster": "",
+      "src": "https://cdn.discordapp.com/attachments/1503846603969138688/1565900138000416951/Comp_1_1.mp4?ex=6ae695a5&is=6ae54425&hm=48c5d78cfa04746e6538bd5b9b9e448d6d0b2d21b001bb28d14194b7c14fb8e6&",
+      "postedAt": "2026-10-31T01:28:06.050000+00:00",
+      "source": "discord"
+    },
     {
       "id": "1565772559666913382-0",
       "type": "r6",
@@ -13,7 +26,7 @@
       "duration": "",
       "featured": false,
       "poster": "",
-      "src": "https://cdn.discordapp.com/attachments/1190354245103407185/1565768365845516388/2026-10-30_19-37-47.mp4?ex=6ae61aec&is=6ae4c96c&hm=86cac8d2e9a81a66d6e3db575aaca5cc46de23d9f465c5c5d7400ad5d79c5c74&",
+      "src": "https://cdn.discordapp.com/attachments/1190354245103407185/1565768365845516388/2026-10-30_19-37-47.mp4?ex=6ae6c3ac&is=6ae5722c&hm=a9538fa70c410bec7434b8315160b14defd827190cdfc9eb1569e00c963899db&",
       "postedAt": "2026-10-30T17:01:08.872000+00:00",
       "source": "discord"
     },
@@ -39,7 +52,7 @@
       "duration": "",
       "featured": false,
       "poster": "",
-      "src": "https://cdn.discordapp.com/attachments/1545473661622952007/1560797881873604699/1017.mp4?ex=6ae5d20d&is=6ae4808d&hm=c845132e893c1c6f5e60846a34bff9752089193ec48f4f4b40601d2ce9454528&",
+      "src": "https://cdn.discordapp.com/attachments/1545473661622952007/1560797881873604699/1017.mp4?ex=6ae67acd&is=6ae5294d&hm=6729732c02222c0e1c0fda74c52e08f5f0b79b5a2b8fdff785600c7be8514f8e&",
       "postedAt": "2026-10-16T23:34:20.007000+00:00",
       "source": "discord"
     },
@@ -52,7 +65,7 @@
       "duration": "",
       "featured": false,
       "poster": "",
-      "src": "https://media.discordapp.net/attachments/1529129551064731789/1540521522542944276/2026-08-21_21-42-13.mp4?ex=6ae5e238&is=6ae490b8&hm=812d62fbbec0440a2b966ffcbf17b102eafc641cd6546d7f04951b22e2250ad5&",
+      "src": "https://media.discordapp.net/attachments/1529129551064731789/1540521522542944276/2026-08-21_21-42-13.mp4?ex=6ae68af8&is=6ae53978&hm=c8798d03913f8c79fb10fb8f0aaa34baf3d17a21fe4ae6613a85a8546145faff&",
       "postedAt": "2026-09-04T20:34:24.330000+00:00",
       "source": "discord"
     },
@@ -65,7 +78,7 @@
       "duration": "",
       "featured": false,
       "poster": "",
-      "src": "https://cdn.discordapp.com/attachments/1503846603969138688/1531453273272356975/Desktop_2026.07.28_-_03.07.49.01.mp4?ex=6ae5da41&is=6ae488c1&hm=1cce6a15f6bac1aa04c82ee17519a7c6cd0eb6287c77687185f8f8aa456106c8&",
+      "src": "https://cdn.discordapp.com/attachments/1503846603969138688/1531453273272356975/Desktop_2026.07.28_-_03.07.49.01.mp4?ex=6ae68301&is=6ae53181&hm=af242d606ceff8de914ffd02692a3ea998adfb5be170c48c8b65facbf588c027&",
       "postedAt": "2026-07-28T00:08:33.587000+00:00",
       "source": "discord"
     },
@@ -78,7 +91,7 @@
       "duration": "",
       "featured": false,
       "poster": "",
-      "src": "https://cdn.discordapp.com/attachments/1503846603969138688/1528935795761741956/Desktop_2026.07.21_-_04.24.02.04.mp4?ex=6ae5ec2b&is=6ae49aab&hm=3c5e2dd18b24bc6bd81f484ede2f59b2b13af95b8039e4ca4538a9a3c2790fc8&",
+      "src": "https://cdn.discordapp.com/attachments/1503846603969138688/1528935795761741956/Desktop_2026.07.21_-_04.24.02.04.mp4?ex=6ae694eb&is=6ae5436b&hm=70a7aaaf814782f3faa52fedcc93a5b6f5cb0149cae0c7eadb6f08a2b136ee4b&",
       "postedAt": "2026-07-21T01:25:00.480000+00:00",
       "source": "discord"
     },
@@ -91,7 +104,7 @@
       "duration": "",
       "featured": false,
       "poster": "",
-      "src": "https://cdn.discordapp.com/attachments/1503846603969138688/1527828251223920780/Desktop_2026.07.18_-_03.01.24.02.mp4?ex=6ae5d930&is=6ae487b0&hm=f30fc8f33e2f077ef2d1d0ccd864c28301409140b367c467397472568d909c36&",
+      "src": "https://cdn.discordapp.com/attachments/1503846603969138688/1527828251223920780/Desktop_2026.07.18_-_03.01.24.02.mp4?ex=6ae681f0&is=6ae53070&hm=8fce903dc2951ce0d1571ff7cded6172566b56d5162a6725000cfa824915dcdf&",
       "postedAt": "2026-07-18T00:04:01.090000+00:00",
       "source": "discord"
     },
@@ -104,7 +117,7 @@
       "duration": "",
       "featured": false,
       "poster": "",
-      "src": "https://cdn.discordapp.com/attachments/1399121797101649991/1522427587367010497/2026-07-03_05-21-44.mp4?ex=6ae5f9ee&is=6ae4a86e&hm=c32a6b8441398c3b87f9723c238da82b3affd02a40ec4a8c7c322cdd12e02900&",
+      "src": "https://cdn.discordapp.com/attachments/1399121797101649991/1522427587367010497/2026-07-03_05-21-44.mp4?ex=6ae6a2ae&is=6ae5512e&hm=7ec9fdf8488020d41e192f430eec1b2bd11a5ce77dc1ed74eb1625ec0875c801&",
       "postedAt": "2026-07-03T02:26:27.050000+00:00",
       "source": "discord"
     },
@@ -130,7 +143,7 @@
       "duration": "",
       "featured": false,
       "poster": "",
-      "src": "https://cdn.discordapp.com/attachments/1518835831735976029/1521201336467591329/0629_1.mp4?ex=6ae62125&is=6ae4cfa5&hm=c1407f9bbad978e3c53c96502571656c7aa74e7f2dacf2d81bdc266720742976&",
+      "src": "https://cdn.discordapp.com/attachments/1518835831735976029/1521201336467591329/0629_1.mp4?ex=6ae6c9e5&is=6ae57865&hm=4ec0a287d063d4cfc470253667e3ee0629a004d22e190a146ce20e89f4a1c3b5&",
       "postedAt": "2026-06-30T19:58:19.427000+00:00",
       "source": "discord"
     },
@@ -195,7 +208,7 @@
       "duration": "",
       "featured": false,
       "poster": "",
-      "src": "https://media.discordapp.net/attachments/1410670852265086976/1451538828488871936/ScreenRecording_12-19-2025_14-34-05_1.mov?ex=6ae5d2e0&is=6ae48160&hm=0edc7a0644c078d7b2768e4b2342254488ae13d7359dddd48e16d73b315b71ff&",
+      "src": "https://media.discordapp.net/attachments/1410670852265086976/1451538828488871936/ScreenRecording_12-19-2025_14-34-05_1.mov?ex=6ae67ba0&is=6ae52a20&hm=0c7d9c16bc3c8dabf6ab5160486af70a7e118ad8fd4f24d87a6b9798e75cc1dd&",
       "postedAt": "2026-05-18T17:47:45.660000+00:00",
       "source": "discord"
     }
